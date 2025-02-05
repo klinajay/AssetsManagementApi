@@ -9,7 +9,7 @@ namespace AssetsManagement.DB
         public IMongoDatabase database;
         public DbContext(IConfiguration configuration)
         {
-            var client = new MongoClient("mongodb://localhost:3017/");
+            var client = new MongoClient("mongodb://mongodb:27017/");
             database = client.GetDatabase("AssetsManagement");
         }
         public IMongoCollection<Machines> Machines => database.GetCollection<Machines>("Machines");

@@ -26,7 +26,7 @@ namespace AssetsManagement.Controllers
             Console.WriteLine("Adding data...");
             bool status = await _inputData.InsertInputData();
             if (status)
-                return Created();
+                return Created("", "Resource created successfully");
               
             else
                 return StatusCode(500);

@@ -28,7 +28,7 @@ namespace AssetsManagement.Controllers
             if (result.Count == 0)
                 return StatusCode(500);
             else
-                return Created();
+                return Created("", "Resource created successfully");
         }
         /// <summary>
         /// Get all assets.

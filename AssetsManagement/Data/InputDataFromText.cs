@@ -18,7 +18,7 @@ namespace AssetsManagement.Data
         }
         public async Task<bool> InsertInputData()
         {
-            string filePath = "./Data/data.txt";
+            string filePath = "/data/data.txt";
             SortedDictionary<string, Machines> machines = new SortedDictionary<string, Machines>();
 
             Dictionary<string, string> assets = new Dictionary<string, string>();
