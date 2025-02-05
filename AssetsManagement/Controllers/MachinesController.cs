@@ -19,23 +19,40 @@ namespace AssetsManagement.Controllers
             _assetsService = assetsService;
         }
         /// <summary>
-        /// Add data of Machines.
+        /// Add machines information.
         /// </summary>
         /// <param name="machines"></param>
         /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddMachine([FromBody] List<Machines> machines)
         {
 
-            await _machineService.AddMachine(machines);
-            return Ok();
+            var result = await _machineService.AddMachine(machines);
+            if (result.Count == 0)
+                return StatusCode(500);
+            else
+                return Created();
         }
+        /// <summary>
+        /// Get all machines
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetMachines()
         {
 
-            await _machineService.GetMachines();
-            return Ok();
+            var machines = await _machineService.GetMachines();
+            if (machines.Count > 0)
+                return Ok(machines);
+            else if (machines.Count == 0)
+                return NoContent();
+            else
+                return StatusCode(500);
         }
     }
 }

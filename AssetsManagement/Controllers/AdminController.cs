@@ -13,13 +13,23 @@ namespace AssetsManagement.Controllers
         {
             _inputData = context;
         }
+        /// <summary>
+        /// Add bulk data to the database.
+        /// </summary>
+        /// <returns> </returns>
         
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddData()
         {
             Console.WriteLine("Adding data...");
-            await _inputData.InsertInputData();
-            return Ok(new { message = "Data added successfully!" });
+            bool status = await _inputData.InsertInputData();
+            if (status)
+                return Created();
+              
+            else
+                return StatusCode(500);
         }
     }
 }
