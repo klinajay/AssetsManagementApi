@@ -51,5 +51,7 @@ namespace AssetsManagement.Controllers
             else
                 return StatusCode(500);
         }
+
+        
     }
 }

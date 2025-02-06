@@ -1,4 +1,5 @@
-﻿using AssetsManagement.Contracts;
+﻿using System.Xml.Linq;
+using AssetsManagement.Contracts;
 using AssetsManagement.DB;
 using AssetsManagement.Models;
 using AssetsManagement.Services;
@@ -54,5 +55,62 @@ namespace AssetsManagement.Controllers
             else
                 return StatusCode(500);
         }
+
+        [HttpGet("{name}/assets")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType (StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAssetsUsedByMachine(string name)
+        {
+            try
+            {
+                Console.WriteLine("Inside GetAssetsUsedByMachine");
+                var assets = await _machineService.GetAssetsUsedByMachines(name);
+                if (assets == null || assets.Count == 0)
+                {
+                    return NoContent();
+                }
+                return Ok(assets);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                
+                Console.Error.WriteLine($"Error in GetAssetsUsedByMachine: {ex.Message}");
+                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
+            }
+        }
+        /// <summary>
+        /// Get machines that are using only the latest assets.
+        /// </summary>
+        /// <returns>List of machines using the latest assets</returns>
+        [HttpGet("latest-assets")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetMachinesUsingLatestAssets()
+        {
+            try
+            {
+                var machines = await _machineService.GetMachinesUsingLatestAssets();
+
+                if (machines == null || machines.Count == 0)
+                {
+                    return NoContent(); 
+                }
+
+                return Ok(machines); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
+        
+
     }
 }

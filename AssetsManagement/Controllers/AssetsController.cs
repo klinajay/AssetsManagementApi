@@ -9,9 +9,12 @@ namespace AssetsManagement.Controllers
     public class AssetsController : Controller
     {
         private readonly AssetsService _assetservice;
-        public AssetsController(AssetsService assetservice)
+        private readonly MachinesService _machineService;
+
+        public AssetsController(AssetsService assetservice, MachinesService machineService)
         {
             _assetservice = assetservice;
+            _machineService = machineService;
         }
         /// <summary>
         /// Add assets information.
@@ -49,5 +52,26 @@ namespace AssetsManagement.Controllers
             else
                 return StatusCode(500);
         }
+        /// <summary>
+        /// Get Machines used by asset.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpGet("{name}/machines")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetMachineUsingAsset(string name)
+        {
+
+            var machines = await _machineService.GetMachineUsingAsset(name);
+            if (machines.Count > 0)
+                return Ok(machines);
+            else if (machines.Count == 0)
+                return NoContent();
+            else
+                return StatusCode(500);
+        }
+
     }
 }
