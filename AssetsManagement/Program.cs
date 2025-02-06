@@ -22,7 +22,9 @@ builder.Services.AddSingleton<MachinesService>();
 builder.Services.AddSingleton<IMachinesRepository, MachinesRepository>();
 builder.Services.AddSingleton<AssetsService>();
 builder.Services.AddSingleton<IAssetsRepository, AssetsRepository>();
-builder.Services.AddSingleton<IInputData, InputDataFromText>();
+//builder.Services.AddSingleton<IInputData, InputDataFromText>();
+builder.Services.AddKeyedSingleton<IInputData, InputDataFromText>("text");
+builder.Services.AddKeyedSingleton<IInputData, InputDataFromJson>("json");
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor(); 
 builder.Services.AddCors(options =>

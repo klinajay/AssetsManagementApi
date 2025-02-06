@@ -1,6 +1,7 @@
 ﻿using AssetsManagement.Data;
 using AssetsManagement.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AssetsManagement.Controllers
 {
@@ -8,26 +9,45 @@ namespace AssetsManagement.Controllers
     [Route("/api/admin")]
     public class AdminController : Controller
     {
-        public IInputData _inputData;
-        public AdminController(IInputData context)
+        private readonly IInputData _textInputData;
+        private readonly IInputData _jsonInputData;
+        public AdminController([FromKeyedServices("text")] IInputData textInputData, [FromKeyedServices("json")] IInputData jsonInputData)
         {
-            _inputData = context;
+            _textInputData = textInputData;
+            _jsonInputData = jsonInputData;
         }
         /// <summary>
-        /// Add bulk data to the database.
+        /// Add bulk data to the database through text file.
         /// </summary>
         /// <returns> </returns>
-        
-        [HttpPost]
+
+        [HttpPost("text")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AddData()
+        public async Task<IActionResult> AddTextData()
         {
-            Console.WriteLine("Adding data...");
-            bool status = await _inputData.InsertInputData();
+            Console.WriteLine("Adding text data...");
+            bool status = await _textInputData.InsertInputData();
             if (status)
-                return Created();
-              
+                return Created("", "Resource created successfully");
+
+            else
+                return StatusCode(500);
+        }
+        /// <summary>
+        /// Add bulk data to the database through json file.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddJsonData()
+        {
+            Console.WriteLine("Adding json data...");
+            bool status = await _jsonInputData.InsertInputData();
+            if (status)
+                return Created("", "Resource created successfully");
+
             else
                 return StatusCode(500);
         }

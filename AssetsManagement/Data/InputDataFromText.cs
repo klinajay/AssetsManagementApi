@@ -7,7 +7,7 @@ namespace AssetsManagement.Data
 {
     public class InputDataFromText : IInputData
     {
-        public string intputStrings;
+        
         private readonly IMachinesRepository _machinesRepository;
         private readonly IAssetsRepository _assetsRepository;
 
@@ -42,15 +42,8 @@ namespace AssetsManagement.Data
             {
                 assetsList.Add(new Assets { Name = asset.Key, LatestVersion = asset.Value });
             }
-            var responseForMachines = await _machinesRepository.AddMachines(machinesList);
-            var responseForAssets = await _assetsRepository.AddAssets(assetsList);
-            if (responseForMachines != null && responseForMachines != null)
-            {
-                return true;
-            }
-            else return false;
-
-
+            
+            return StoreToDataBase(machinesList, assetsList).Result;
         }
         public bool SegregateDataFromLines(string line, SortedDictionary<string, Machines> machines, Dictionary<string, string> assets)
         {
@@ -97,9 +90,16 @@ namespace AssetsManagement.Data
             }
             return false;
         }
-        public async Task<bool> StoreToDataBase()
+        public async Task<bool> StoreToDataBase(List<Machines> machinesList, List<Assets> assetsList)
         {
-            return await InsertInputData();
+            var responseForMachines = await _machinesRepository.AddMachines(machinesList);
+            var responseForAssets = await _assetsRepository.AddAssets(assetsList);
+            if (responseForMachines != null && responseForMachines != null)
+            {
+                return true;
+            }
+            else return false;
+
         }
 
     }

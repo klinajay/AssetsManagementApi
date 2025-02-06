@@ -1,0 +1,47 @@
+[
+    {
+        "Machine": "C300",
+        "Asset": "Cutter head",
+        "Version": "S6"
+    },
+    {
+        "Machine": "C40",
+        "Asset": "Cutter head",
+        "Version": "S7"
+    },
+    {
+        "Machine": "C300",
+        "Asset": "Blade safety cover",
+        "Version": "S10"
+    },
+    {
+        "Machine": "C60",
+        "Asset": "Blade safety cover",
+        "Version": "S11"
+    },
+    {
+        "Machine": "C300",
+        "Asset": "Deburring blades",
+        "Version": "S6"
+    },
+    {
+        "Machine": "C60",
+        "Asset": "Cutter head",
+        "Version": "S8"
+    },
+    {
+        "Machine": "C60",
+        "Asset": "Clamping fixture",
+        "Version": "S2"
+    },
+    {
+        "Machine": "C40",
+        "Asset": "Blade safety cover",
+        "Version": "S11"
+    },
+    {
+        "Machine": "C40",
+        "Asset": "Shutter gripper",
+        "Version": "S3"
+    }
+]
